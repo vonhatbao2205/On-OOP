@@ -12,82 +12,79 @@
 // Modify void operator()(T num) into void operator()(const T &num)
 
 // // Cau 2
-// class Fraction
-// {
-//     protected:
-//         int _num,_den;
-//     public:
-//         friend ostream& operator<<(ostream& out, const Fraction& other)
-//         {
-//             out<<other._num<<"/"<<other._den;
-//             return out;
-//         }
-//         Fraction(int num, int den): _num(num), _den(den) {}
+// #include <iostream>
+// #include <cmath>
+
+// using namespace std;
+
+// bool isPrime(int n) {
+//     if (n < 2) return false;
+//     for (int i = 2; i <= sqrt(n); ++i)
+//         if (n % i == 0) return false;
+//     return true;
+// }
+
+// class Fraction {
+// private:
+//     int _num, _den;
+
+//     friend class PrimeFracIterator;
+
+// public:
+//     Fraction(int num = 0, int den = 1) : _num(num), _den(den) {}
+
+//     friend ostream& operator<<(ostream& out, const Fraction& f) {
+//         out << f._num << "/" << f._den;
+//         return out;
+//     }
 // };
-// class PrimeFracIterator
-// {
-//     private:
-//         Fraction *curr;
-//         Fraction *end;
-//         void findNextValid()
-//         {
-//             while(curr!=end && !isPrime(curr->_num))
-//             {
-//                 curr++;
-//             }
-//         }
-//     public:
-//         PrimeFracIterator(Fraction* arr, int size)
-//         {
-//             _size=size;
-//             _arr=new Fraction[size];
-//             for(int i=0;i<size;i++)
-//             {
-//                 _arr[i]=arr[i];
-//             }
-//         }
-//         ~PrimeFracIterator()
-//         {
-//             delete[] _arr;
-//         }
-//         PrimeFracIterator(const PrimeFracIterator& other)
-//         {
-//             _size=other._size;
-//             _arr=new Fraction[_size];
-//             for(int i=0;i<_size;i++)
-//             {
-//                 _arr[i]=other._arr[i];
-//             }
-//         }
-//         PrimeFracIterator& operator=(const PrimeFracIterator& other)
-//         {
-//             if(this!=&other)
-//             {
-//                 delete[] _arr;
-//                 _size=other._size;
-//                 _arr=new Fraction[_size];
-//                 for(int i=0;i<_size;i++)
-//                 {
-//                     _arr[i]=other._arr[i];
-//                 }
-//             }
-//             return *this;
-//         }
-//         PrimeFracIterator& operator++()
-//         {
+
+// class PrimeFracIterator {
+// private:
+//     Fraction* curr;
+//     Fraction* end;
+
+//     bool isValid(Fraction* f) {
+//         return isPrime(f->_num) && isPrime(f->_den);
+//     }
+//     void findNextValid() {
+//         while (curr < end && !isValid(curr)) {
 //             curr++;
+//         }
+//     }
+
+// public:
+//     PrimeFracIterator(Fraction* arr, int size) {
+//         curr = arr;
+//         end = arr + size;
+
+//         if (curr < end && !isValid(curr)) {
 //             findNextValid();
-//             return *this;
 //         }
-//         Fraction operator*()
-//         {
-//             return *curr;
-//         }
-//         operator bool()
-//         {
-//             return curr!=end;
-//         }
+//     }
+//     PrimeFracIterator& operator++() {
+//         curr++;
+//         return *this;
+//     }
+//     Fraction operator*() {
+//         return *curr;
+//     }
+//     operator bool() {
+//         return curr < end;
+//     }
 // };
+
+// int main() {
+//     Fraction a[] = { {1, 2}, {2, 3}, {4, 2}, {3, 5} };
+
+//     PrimeFracIterator i(a, 4);
+
+//     while(i) {
+//         cout << *i << " ";
+//         ++i;
+//     }
+//     return 0;
+// }
 // Cau 3
 #include <cmath>
 #include <iostream>
