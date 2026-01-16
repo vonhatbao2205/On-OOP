@@ -1,0 +1,128 @@
+// Cau 1
+a)
+Create.
+Create.
+Create.
+Copy.
+Copy.
+Copy.
+2
+
+b)
+Modify void operator()(T num) into void operator()(const T &num)
+
+// Cau 2
+class Fraction
+{
+    protected:
+        int _num,_den;
+    public:
+        friend ostream& operator<<(ostream& out, const Fraction& other)
+        {
+            out<<other._num<<"/"<<other._den;
+            return out;
+        }
+        Fraction(int num, int den): _num(num), _den(den) {}
+};
+class PrimeFracIterator
+{
+    private:
+        Fraction *curr;
+        Fraction *end;
+        void findNextValid()
+        {
+            while(curr!=end && !isPrime(curr->_num))
+            {
+                curr++;
+            }
+        }
+    public:
+        PrimeFracIterator(Fraction* arr, int size)
+        {
+            _size=size;
+            _arr=new Fraction[size];
+            for(int i=0;i<size;i++)
+            {
+                _arr[i]=arr[i];
+            }
+        }
+        ~PrimeFracIterator()
+        {
+            delete[] _arr;
+        }
+        PrimeFracIterator(const PrimeFracIterator& other)
+        {
+            _size=other._size;
+            _arr=new Fraction[_size];
+            for(int i=0;i<_size;i++)
+            {
+                _arr[i]=other._arr[i];
+            }
+        }
+        PrimeFracIterator& operator=(const PrimeFracIterator& other)
+        {
+            if(this!=&other)
+            {
+                delete[] _arr;
+                _size=other._size;
+                _arr=new Fraction[_size];
+                for(int i=0;i<_size;i++)
+                {
+                    _arr[i]=other._arr[i];
+                }
+            }
+            return *this;
+        }
+        PrimeFracIterator& operator++()
+        {
+            curr++;
+            findNextValid();
+            return *this; 
+        }        
+        Fraction operator*()
+        {
+            return *curr;
+        }
+        operator bool()
+        {
+            return curr!=end;
+        }
+};
+
+// Cau 3
+class Filter
+{
+    public:
+        virtual Filter* clone()const=0;
+        virtual ~Filter(){}
+        virtual bool filter(int num) const=0;
+};
+class DivisibleFilter: public Filter
+{
+    private:
+        int n;
+    public:
+        DivisibleFilter(int n): n(n){}
+        Filter* clone()const {return new DivisibleFilter(*this);}
+        bool filter(int num) const {return num%n==0;}
+}
+class OddIndexFilter: public Filter
+{
+    public:
+        Filter* clone()const {return new OddIndexFilter(*this);}
+        bool filter(int num) const {return num%2==1;}
+};
+class DiffAvgFilter: public Filter
+{
+    private:
+        int avg;
+    public:
+        DiffAvgFilter(int avg): avg(avg){}
+        Filter* clone()const {return new DiffAvgFilter(*this);}
+        bool filter(int num) const {return num-avg==0;}
+};
+class Extractor
+{
+    public:
+    
+}
